@@ -1,0 +1,9 @@
+/* styles.css */
+pre {
+    color: #0265c9; /* Change this to your desired text color */
+    background-color: #a02424; /* Change this to your desired background color */
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+  }
+  

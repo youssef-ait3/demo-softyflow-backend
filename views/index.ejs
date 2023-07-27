@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+  <title><%= title %></title>
+  <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+</head>
+<body>
+  <div id="app">
+    <!-- <pre><%- JSON.stringify(items, null, 2) %></pre> -->
+    <!-- <h1><%= title %></h1> -->
+    <!-- <h1><% items => item > model = 'email' => models={'email': ''}%> </h1>-->
+    <% items.forEach(function(element) { %>
+      <% if (element.management.available) { %>
+      <div class="component">
+        <span>
+          <% if (element.typee === "input") { %>
+            <el-input placeholder="Please input" v-model="input" style="display: <%= element.management.visible ? 'block' : 'none' %>"></el-input>
+          <% } else if (element.typee === 'radio-button') { %>
+            <el-radio v-model="radio" label="1" style="display: <%= element.management.visible ? 'block' : 'none' %>">Option A</el-radio>
+          <% } else if (element.typee === 'dropdown') { %>
+            <el-dropdown style="display: <%= element.management.visible ? 'block' : 'none' %>">
+              <span class="el-dropdown-link">
+                Dropdown List<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>Action 1</el-dropdown-item>
+                <el-dropdown-item disabled>Action 2</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          <% } else if (element.typee === 'file-upload') { %>
+            <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple
+              :limit="3" :on-exceed="handleExceed" :file-list="fileList" style="display: <%= element.management.visible ? 'block' : 'none' %>">
+              <el-button size="small" type="primary">Click to upload</el-button>
+              <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+            </el-upload>
+          <% } else if (element.typee === 'button') { %>
+            <el-button type="primary" style="display: <%= element.management.visible ? 'block' : 'none' %>">Primary</el-button>
+          <% } else if (element.typee === 'text-area') { %>
+            <el-input type="textarea" :rows="2" placeholder="Please input" v-model="textarea" style="display: <%= element.management.visible ? 'block' : 'none' %>"></el-input>
+          <% } %>
+        </span>
+      </div>
+      <% } %>
+      
+    <% }) %>
+  </div>
+</body>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: function() {
+      return { visible: false, input: '', radio: '', fileList: [], textarea: '' }
+    },
+    methods: {
+      handlePreview: function (file) {
+        console.log('File preview: ', file);
+      },
+      handleRemove: function (file, fileList) {
+        console.log('File removed: ', file, fileList);
+      },
+      beforeRemove: function (file, fileList) {
+        return this.$confirm(`Remove file ${file.name}?`);
+      },
+      handleExceed: function (files, fileList) {
+        this.$message.warning(`The maximum number of files is 3.`);
+      }
+    }
+  })
+</script>
+</html>
