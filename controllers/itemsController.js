@@ -5,7 +5,7 @@ const router = express.Router();
 const ejs = require('ejs')
 
 
-const filePath = '/home/achsofty/Documents/backend/views/index.ejs'
+const filePath = '/home/achsofty/Documents/demo-softyflow-backend/views/index.ejs'
 const getItems = async (req, res) => {
     try {
         const items = await Items.find();
