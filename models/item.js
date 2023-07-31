@@ -18,11 +18,18 @@ const itemsSchema = new mongoose.Schema({
         name: {
             type: String,
         },
+        model: {
+            type: String,
+        },
+        handle: {
+            type: String,
+        },
         management:{
             available:{ type: Boolean },
             visible:{ type: Boolean },
         }
-    }]
+    }],
+    fonction: { type: String }
     
 }, { timestamps: true })
 

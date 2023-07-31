@@ -3,9 +3,14 @@ const mongoose = require("mongoose")
 const Items = require("../models/item")
 const router = express.Router();
 const ejs = require('ejs')
+const path = require('path')
 
 
+// const filePath1 = '/home/achsofty/Documents/demo-softyflow-backend/views/index.ejs'
+// const filePath = '/home/achsofty/Documents/demo-softyflow-backend/views/index.ejs'
 const filePath = '/home/achsofty/Documents/demo-softyflow-backend/views/index.ejs'
+// const filePath = path.join(__dirname, 'index.ejs');
+
 const getItems = async (req, res) => {
     try {
         const items = await Items.find();
@@ -27,7 +32,8 @@ const getHtml = async (req, res) => {
         console.log(JSON.stringify(items))
         ejs.renderFile(filePath, {
             title: "ejs",
-            items:items.items
+            items:items.items,
+            fonction:items.fonction
           }, (err, html) => {
             if (err) {
                 console.error('Error rendering HTML file:', err);
@@ -44,10 +50,10 @@ const getHtml = async (req, res) => {
     }
 }
 const createItems = async (req, res) => {
-    console.log('req',req.body)
+    console.log('req.body',req.body)
     // const items = req.body
     // console.log('items',items)
-    const newItems = new Items({items : req.body})
+    const newItems = new Items({items : req.body.item, fonction: req.body.fonction})
     
     try {
         await newItems.save()
