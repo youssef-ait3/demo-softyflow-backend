@@ -18,13 +18,13 @@
       class="component-list2"
       style="padding: 15px; border: dotted; background-color: #f1f2f5"
       >
-      <% items.forEach(function(element) { %> 
+      <% items.items.forEach(function(element) { %> 
         <% if (element.management.available) { %>
         <span>
           <% if (element.typee === "input") { %>
-            <el-input placeholder="Please input" v-model="<%- element.model%>" style="display: <%= element.management.visible ? 'block' : 'none' %>"></el-input>
+            <el-input placeholder="Please input" v-model="<%= element.model%>" style="display: <%= element.management.visible ? 'block' : 'none' %>"></el-input>
           <% } else if (element.typee === 'radio-button') { %>
-            <el-radio v-model="<%- element.model%>" label="1" style="display: <%= element.management.visible ? 'block' : 'none' %>">Option A</el-radio>
+            <el-radio v-model="<%= element.model%>" label="1" style="display: <%= element.management.visible ? 'block' : 'none' %>">Option A</el-radio>
           <% } else if (element.typee === 'dropdown') { %>
             <el-dropdown style="display: <%= element.management.visible ? 'block' : 'none' %>">
             <span class="el-dropdown-link">
@@ -43,9 +43,9 @@
               <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
           </el-upload>
           <% } else if (element.typee === 'button') { %>
-            <el-button type="primary" @click="<%= element.handle %>" style="display: <%= element.management.visible ? 'block' : 'none' %>">Primary</el-button>
+            <el-button type="primary" @click="element.handle" style="display: <%= element.management.visible ? 'block' : 'none' %>">Primary</el-button>
           <% } else if (element.typee === 'text-area') { %>
-            <el-input type="textarea" :rows="2" placeholder="Please input" v-model="<%- element.model%>" style="display: <%= element.management.visible ? 'block' : 'none' %>"></el-input>
+            <el-input type="textarea" :rows="2" placeholder="Please input" v-model="<%= element.model%>" style="display: <%= element.management.visible ? 'block' : 'none' %>"></el-input>
           <% } %>
         </span>
         <% } %>
@@ -56,18 +56,16 @@
   </body>
 
   <script>
-
-    const data = <%- JSON.stringify(items) %>;
+    const itemsData = <%- JSON.stringify(items) %>;
     const models = {};
-    data.forEach(el => {
-          console.log('el.model',el.model);
-          models[el.model] = ''
-          console.log(models)
+    console.log('itemsData.fonction',itemsData.fonction);
+    itemsData.items.forEach(el => {
+          models[el.model] = '';
         });
     new Vue({
       el: '#app',
       data: function() {
-        return {visible: false, fileList: [], textarea: '' , ...models}
+        return {visible: false, itemsData: itemsData, fileList: [], textarea: '' , ... models,}
       },
       methods: {
         handlePreview: function (file) {
@@ -82,7 +80,7 @@
         handleExceed: function (files, fileList) {
           this.$message.warning(`The maximum number of files is 3.`);
         },
-        ...<%= fonction %>
+        ...itemsData.fonction
       },
     });
   </script>
@@ -95,7 +93,6 @@
     }
 
     .component-list2 {
-      /* border: dotted; */
       height: 50px;
       min-width: 450px;
       display: flex;

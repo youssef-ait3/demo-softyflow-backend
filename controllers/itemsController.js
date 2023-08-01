@@ -32,8 +32,7 @@ const getHtml = async (req, res) => {
         console.log(JSON.stringify(items))
         ejs.renderFile(filePath, {
             title: "ejs",
-            items:items.items,
-            fonction:items.fonction
+            items:items
           }, (err, html) => {
             if (err) {
                 console.error('Error rendering HTML file:', err);
