@@ -15,72 +15,82 @@
   <body>
     <div id="app">
       <div
-      class="component-list2"
-      style="padding: 15px; border: dotted; background-color: #f1f2f5"
+        class="component-list2"
+        style="padding: 15px; border: dotted; background-color: #f1f2f5"
       >
-      <% items.items.forEach(function(element) { %> 
-        <% if (element.management.available) { %>
+        <% items.items?.forEach(function(element) { %> <% if
+        (element.management.available) { %>
         <span>
           <% if (element.typee === "input") { %>
-            <el-input placeholder="Please input" v-model="<%= element.model%>" style="display: <%= element.management.visible ? 'block' : 'none' %>"></el-input>
-          <% } else if (element.typee === 'radio-button') { %>
-            <el-radio v-model="<%= element.model%>" label="1" style="display: <%= element.management.visible ? 'block' : 'none' %>">Option A</el-radio>
-          <% } else if (element.typee === 'dropdown') { %>
-            <el-dropdown style="display: <%= element.management.visible ? 'block' : 'none' %>">
-            <span class="el-dropdown-link">
-              Dropdown List<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>Action 1</el-dropdown-item>
-              <el-dropdown-item disabled>Action 2</el-dropdown-item>
-              </el-dropdown-menu>
-          </el-dropdown>
-          <% } else if (element.typee === 'file-upload') { %>
-            <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"
-              :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple
-              :limit="3" :on-exceed="handleExceed" :file-list="fileList" style="display: <%= element.management.visible ? 'block' : 'none' %>">
-            <el-button size="small" type="primary">Click to upload</el-button>
-              <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-          </el-upload>
-          <% } else if (element.typee === 'button') { %>
-            <el-button type="primary" @click="element.handle" style="display: <%= element.management.visible ? 'block' : 'none' %>">Primary</el-button>
-          <% } else if (element.typee === 'text-area') { %>
-            <el-input type="textarea" :rows="2" placeholder="Please input" v-model="<%= element.model%>" style="display: <%= element.management.visible ? 'block' : 'none' %>"></el-input>
+          <el-input
+            placeholder="Please input"
+            v-model="<%= element.model%>"
+            @change="<%- element.handle %>"
+            style="display: <%= element.management.visible ? 'block' : 'none' %>"
+          ></el-input>
+
+          <% } else if (element.typee==='checked' ) { %>
+          <el-checkbox
+            v-model="<%= element.model%>"
+            @change="<%- element.handle %>"
+            style="display: <%= element.management.visible ? 'block' : 'none' %>"
+            >Option</el-checkbox
+          >
+          <% } else if (element.typee==='select' ) { %>
+          <el-select v-model="<%= element.model%>" @change="<%- element.handle %>" placeholder="Select">
+            <el-option
+              style="display: <%= element.management.visible ? 'block' : 'none' %>"
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+          <% } else if (element.typee==='button' ) { %>
+          <el-button type="primary" <% if (element.handle) { %>
+            @click="<%- element.handle %>" <% } %> style="display: <%=
+            element.management.visible ? 'block' : 'none' %>">Primary</el-button
+          >
+          <% } else if (element.typee==='text-area' ) { %>
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="Please input"
+            v-model="<%= element.model%>"
+            @change="<%- element.handle %>"
+            style="display: <%= element.management.visible ? 'block' : 'none' %>"
+          ></el-input>
           <% } %>
         </span>
-        <% } %>
-        <% }) %>
+        <% } %> <% }) %>
       </div>
-      
     </div>
   </body>
 
   <script>
-    const itemsData = <%- JSON.stringify(items) %>;
+    const itemsData = <%- JSON.stringify(items.items) %>;
+    const fonctionData = <%- items?.fonction %>;
+    console.log('fonctionData', fonctionData);
     const models = {};
-    console.log('itemsData.fonction',itemsData.fonction);
-    itemsData.items.forEach(el => {
+    itemsData?.forEach(el => {
           models[el.model] = '';
         });
+    console.log('models', models);
     new Vue({
       el: '#app',
       data: function() {
-        return {visible: false, itemsData: itemsData, fileList: [], textarea: '' , ... models,}
+        return {visible: false, options: {}, options: [{
+          value: 'Option1',
+          label: 'Option1'
+        }, {
+          value: 'Option2',
+          label: 'Option2'
+        }],
+        value: '', ...models,}
       },
       methods: {
-        handlePreview: function (file) {
-        console.log('File preview: ', file);
-        },
-        handleRemove: function (file, fileList) {
-        console.log('File removed: ', file, fileList);
-        },
-        beforeRemove: function (file, fileList) {
-          return this.$confirm(`Remove file ${file.name}?`);
-        },
-        handleExceed: function (files, fileList) {
-          this.$message.warning(`The maximum number of files is 3.`);
-        },
-        ...itemsData.fonction
+        ...fonctionData,
       },
     });
   </script>
