@@ -25,21 +25,31 @@
           <el-input
             placeholder="Please input"
             v-model="<%= element.model%>"
-            @change="<%- element.handle %>"
+            <% if (element.handle && element.handle.trim() !== "") { %>
+              @change="<%- element.handle %>"
+            <% } %>
             style="display: <%= element.management.visible ? 'block' : 'none' %>"
           ></el-input>
 
           <% } else if (element.typee==='checked' ) { %>
           <el-checkbox
             v-model="<%= element.model%>"
-            @change="<%- element.handle %>"
+            <% if (element.handle && element.handle.trim() !== "") { %>
+              @change="<%- element.handle %>"
+            <% } %>
             style="display: <%= element.management.visible ? 'block' : 'none' %>"
             >Option</el-checkbox
           >
           <% } else if (element.typee==='select' ) { %>
-          <el-select v-model="<%= element.model%>" @change="<%- element.handle %>" placeholder="Select">
+          <el-select
+            placeholder="Select"
+            v-model="<%= element.model%>" 
+            style="display: <%= element.management.visible ? 'block' : 'none' %>"
+            <% if (element.handle && element.handle.trim() !== "") { %>
+              @change="<%- element.handle %>"
+            <% } %>
+          >
             <el-option
-              style="display: <%= element.management.visible ? 'block' : 'none' %>"
               v-for="item in options"
               :key="item.value"
               :label="item.label"
@@ -48,17 +58,23 @@
             </el-option>
           </el-select>
           <% } else if (element.typee==='button' ) { %>
-          <el-button type="primary" <% if (element.handle) { %>
-            @click="<%- element.handle %>" <% } %> style="display: <%=
-            element.management.visible ? 'block' : 'none' %>">Primary</el-button
-          >
+          <el-button
+            type="primary" 
+            style="display: <%= element.management.visible ? 'block' : 'none' %>"
+            <% if (element.handle && element.handle.trim() !== "") { %>
+              @click="<%- element.handle %>"
+            <% } %>
+          >Primary
+          </el-button>
           <% } else if (element.typee==='text-area' ) { %>
           <el-input
-            type="textarea"
+            type="text-area"
             :rows="2"
             placeholder="Please input"
             v-model="<%= element.model%>"
-            @change="<%- element.handle %>"
+            <% if (element.handle && element.handle.trim() !== "") { %>
+              @change="<%- element.handle %>"
+            <% } %>
             style="display: <%= element.management.visible ? 'block' : 'none' %>"
           ></el-input>
           <% } %>
